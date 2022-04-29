@@ -15,6 +15,7 @@
  */
 package org.thingsboard.server.actors.app;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.server.actors.ActorSystemContext;
 import org.thingsboard.server.actors.TbActor;
@@ -78,6 +79,7 @@ public class AppActor extends ContextAwareActor {
 
     @Override
     protected boolean doProcess(TbActorMsg msg) {
+        log.warn("AppActor.doProcess,msg = {}", JSON.toJSONString(msg));
         if (!ruleChainsInitialized) {
             initTenantActors();
             ruleChainsInitialized = true;
@@ -156,6 +158,7 @@ public class AppActor extends ContextAwareActor {
     }
 
     private void onQueueToRuleEngineMsg(QueueToRuleEngineMsg msg) {
+//        log.warn("AppActor.onQueueToRuleEngineMsg,msg = {}", JSON.toJSONString(msg));
         if (TenantId.SYS_TENANT_ID.equals(msg.getTenantId())) {
             msg.getMsg().getCallback().onFailure(new RuleEngineException("Message has system tenant id!"));
         } else {

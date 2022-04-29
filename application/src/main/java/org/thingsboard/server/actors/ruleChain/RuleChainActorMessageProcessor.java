@@ -15,6 +15,7 @@
  */
 package org.thingsboard.server.actors.ruleChain;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.rule.engine.api.TbRelationTypes;
 import org.thingsboard.server.actors.ActorSystemContext;
@@ -199,6 +200,7 @@ public class RuleChainActorMessageProcessor extends ComponentMsgProcessor<RuleCh
     }
 
     void onQueueToRuleEngineMsg(QueueToRuleEngineMsg envelope) {
+//        log.warn("RuleChainActorMessageProcessor.onQueueToRuleEngineMsg envelope = {}", JSON.toJSONString(envelope));
         TbMsg msg = envelope.getMsg();
         if (!checkMsgValid(msg)) {
             return;
@@ -223,10 +225,10 @@ public class RuleChainActorMessageProcessor extends ComponentMsgProcessor<RuleCh
                 targetCtx = nodeActors.get(targetId);
             }
             if (targetCtx != null) {
-                log.trace("[{}][{}] Pushing message to target rule node", entityId, targetId);
+                log.warn("[{}][{}] Pushing message to target rule node, msg={}", entityId, targetId, JSON.toJSONString(msg));
                 pushMsgToNode(targetCtx, msg, NA_RELATION_TYPE);
             } else {
-                log.trace("[{}][{}] Rule node does not exist. Probably old message", entityId, targetId);
+                log.warn("[{}][{}] Rule node does not exist. Probably old message", entityId, targetId);
                 msg.getCallback().onSuccess();
             }
         } catch (RuleNodeException rne) {

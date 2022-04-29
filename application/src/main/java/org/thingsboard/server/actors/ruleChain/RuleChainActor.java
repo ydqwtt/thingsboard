@@ -15,6 +15,8 @@
  */
 package org.thingsboard.server.actors.ruleChain;
 
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.server.actors.ActorSystemContext;
 import org.thingsboard.server.actors.TbActor;
 import org.thingsboard.server.actors.TbActorCtx;
@@ -30,6 +32,7 @@ import org.thingsboard.server.common.msg.plugin.ComponentLifecycleMsg;
 import org.thingsboard.server.common.msg.queue.PartitionChangeMsg;
 import org.thingsboard.server.common.msg.queue.QueueToRuleEngineMsg;
 
+@Slf4j
 public class RuleChainActor extends ComponentActor<RuleChainId, RuleChainActorMessageProcessor> {
 
     private final RuleChain ruleChain;
@@ -47,6 +50,7 @@ public class RuleChainActor extends ComponentActor<RuleChainId, RuleChainActorMe
 
     @Override
     protected boolean doProcess(TbActorMsg msg) {
+        log.warn("RuleChainActor.doProcess msg={}", JSON.toJSONString(msg));
         switch (msg.getMsgType()) {
             case COMPONENT_LIFE_CYCLE_MSG:
                 onComponentLifecycleMsg((ComponentLifecycleMsg) msg);

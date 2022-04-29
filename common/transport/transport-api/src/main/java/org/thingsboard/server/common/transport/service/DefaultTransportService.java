@@ -532,6 +532,7 @@ public class DefaultTransportService implements TransportService {
 
     @Override
     public void process(TransportProtos.SessionInfoProto sessionInfo, TransportProtos.PostTelemetryMsg msg, TransportServiceCallback<Void> callback) {
+        log.warn("");
         int dataPoints = 0;
         for (TransportProtos.TsKvListProto tsKv : msg.getTsKvListList()) {
             dataPoints += tsKv.getKvCount();

@@ -15,6 +15,7 @@
  */
 package org.thingsboard.server.actors.tenant;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.server.actors.ActorSystemContext;
 import org.thingsboard.server.actors.TbActor;
@@ -119,6 +120,7 @@ public class TenantActor extends RuleChainManagerActor {
 
     @Override
     protected boolean doProcess(TbActorMsg msg) {
+        log.warn("TenantActor.doProcess,msg={}", JSON.toJSONString(msg));
         if (cantFindTenant) {
             log.info("[{}] Processing missing Tenant msg: {}", tenantId, msg);
             if (msg.getMsgType().equals(MsgType.QUEUE_TO_RULE_ENGINE_MSG)) {

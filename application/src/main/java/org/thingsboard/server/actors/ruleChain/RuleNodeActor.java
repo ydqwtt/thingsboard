@@ -15,6 +15,7 @@
  */
 package org.thingsboard.server.actors.ruleChain;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.server.actors.ActorSystemContext;
 import org.thingsboard.server.actors.TbActor;
@@ -52,6 +53,7 @@ public class RuleNodeActor extends ComponentActor<RuleNodeId, RuleNodeActorMessa
 
     @Override
     protected boolean doProcess(TbActorMsg msg) {
+        log.warn("RuleNodeActor.doProcess,msg = {}", JSON.toJSONString(msg));
         switch (msg.getMsgType()) {
             case COMPONENT_LIFE_CYCLE_MSG:
             case RULE_NODE_UPDATED_MSG:

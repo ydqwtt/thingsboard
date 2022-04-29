@@ -15,7 +15,9 @@
  */
 package org.thingsboard.rule.engine.transform;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.util.concurrent.ListenableFuture;
+import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.rule.engine.api.RuleNode;
 import org.thingsboard.rule.engine.api.ScriptEngine;
 import org.thingsboard.rule.engine.api.TbContext;
@@ -41,6 +43,7 @@ import java.util.List;
                 "All fields in resulting object are optional and will be taken from original message if not specified.",
         uiResources = {"static/rulenode/rulenode-core-config.js"},
         configDirective = "tbTransformationNodeScriptConfig")
+@Slf4j
 public class TbTransformMsgNode extends TbAbstractTransformNode {
 
     private TbTransformMsgNodeConfiguration config;
@@ -55,6 +58,7 @@ public class TbTransformMsgNode extends TbAbstractTransformNode {
 
     @Override
     protected ListenableFuture<List<TbMsg>> transform(TbContext ctx, TbMsg msg) {
+        log.info("TbTransformMsgNode.transform  msg={},ctx={}", JSON.toJSONString(msg), JSON.toJSONString(ctx));
         ctx.logJsEvalRequest();
         return jsEngine.executeUpdateAsync(msg);
     }

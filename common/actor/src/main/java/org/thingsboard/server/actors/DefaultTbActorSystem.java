@@ -15,6 +15,7 @@
  */
 package org.thingsboard.server.actors;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +89,8 @@ public class DefaultTbActorSystem implements TbActorSystem {
     }
 
     private TbActorRef createActor(String dispatcherId, TbActorCreator creator, TbActorId parent) {
+        log.error("createActor request params, dispatcherId={},creator={},parent={}",dispatcherId,
+                JSON.toJSONString(creator),JSON.toJSONString(parent));
         Dispatcher dispatcher = dispatchers.get(dispatcherId);
         if (dispatcher == null) {
             log.warn("Dispatcher with id [{}] is not registered!", dispatcherId);
@@ -115,6 +118,8 @@ public class DefaultTbActorSystem implements TbActorSystem {
                     }
                     TbActorMailbox mailbox = new TbActorMailbox(this, settings, actorId, parentRef, actor, dispatcher);
                     actors.put(actorId, mailbox);
+                    log.error("createActor return data, dispatcherId={},actorId={},actorMailbox={}", dispatcherId, actorId,
+                            JSON.toJSONString(mailbox));
                     mailbox.initActor();
                     actorMailbox = mailbox;
                     if (parent != null) {

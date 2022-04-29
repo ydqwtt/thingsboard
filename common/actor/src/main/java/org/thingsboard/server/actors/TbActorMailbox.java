@@ -15,7 +15,9 @@
  */
 package org.thingsboard.server.actors;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.server.common.data.EntityType;
 import org.thingsboard.server.common.msg.MsgType;
@@ -31,6 +33,7 @@ import java.util.function.Supplier;
 
 @Slf4j
 @Data
+@ToString
 public final class TbActorMailbox implements TbActorCtx {
     private static final boolean HIGH_PRIORITY = true;
     private static final boolean NORMAL_PRIORITY = false;
@@ -138,7 +141,6 @@ public final class TbActorMailbox implements TbActorCtx {
             }
             if (msg != null) {
                 try {
-                    log.debug("[{}] Going to process message: {}", selfId, msg);
                     actor.process(msg);
                 } catch (TbRuleNodeUpdateException updateException) {
                     stopReason = TbActorStopReason.INIT_FAILED;
